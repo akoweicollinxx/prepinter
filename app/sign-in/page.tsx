@@ -5,12 +5,29 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 
+// Define the types for your particles and code rain
+interface Particle {
+  id: number;
+  left: number;
+  top: number;
+  animationDelay: number;
+  animationDuration: number;
+}
+
+interface CodeRain {
+  id: number;
+  left: number;
+  animationDelay: number;
+  bits: string[];
+}
+
 export default function SignInPage() {
   const { data: session, status } = useSession()
   const router = useRouter()
 
-  const [particles, setParticles] = useState([])
-  const [codeRain, setCodeRain] = useState([])
+  // Initialize with proper TypeScript types
+  const [particles, setParticles] = useState<Particle[]>([])
+  const [codeRain, setCodeRain] = useState<CodeRain[]>([])
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
@@ -22,7 +39,7 @@ export default function SignInPage() {
   useEffect(() => {
     setIsClient(true)
 
-    const particleData = Array.from({ length: 40 }, (_, i) => ({
+    const particleData: Particle[] = Array.from({ length: 40 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       top: Math.random() * 100,
@@ -31,7 +48,7 @@ export default function SignInPage() {
     }))
     setParticles(particleData)
 
-    const codeRainData = Array.from({ length: 20 }, (_, i) => ({
+    const codeRainData: CodeRain[] = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       left: i * 5,
       animationDelay: i * 0.5,
@@ -45,24 +62,14 @@ export default function SignInPage() {
   return (
     <main className="min-h-screen relative overflow-hidden flex items-center justify-center px-6 text-white">
 
-      {/* 🔥 VIDEO BACKGROUND */}
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute inset-0 w-full h-full object-cover z-[-10]"
-      >
-        <source src="/signin-bg.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      {/* Background Glow & Effects */}
+      <div className="absolute inset-0 bg-gradient-to-br from-black via-purple-900 to-black z-0" />
 
-      {/* 🟣 Glow Grid Overlay */}
       <div className="absolute inset-0 opacity-30 z-0">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(147,51,234,0.3)_1px,transparent_1px),linear-gradient(90deg,rgba(147,51,234,0.3)_1px,transparent_1px)] bg-[size:100px_100px] animate-pulse"></div>
       </div>
 
-      {/* 🔵 Floating Particles */}
+      {/* Floating Particles */}
       {isClient && (
         <div className="absolute inset-0 z-0">
           {particles.map((particle) => (
@@ -80,7 +87,7 @@ export default function SignInPage() {
         </div>
       )}
 
-      {/* 💻 Code Rain */}
+      {/* Code Rain */}
       {isClient && (
         <div className="absolute inset-0 overflow-hidden opacity-10 z-0">
           {codeRain.map((rain) => (
@@ -102,19 +109,19 @@ export default function SignInPage() {
         </div>
       )}
 
-      {/* 🌈 Glow Orbs */}
+      {/* Glow Orbs */}
       <div className="absolute top-1/3 left-1/4 w-64 h-64 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
       <div className="absolute bottom-1/3 right-1/4 w-80 h-80 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full blur-3xl opacity-20 animate-pulse"></div>
 
-      {/* 🚀 Sign-in Card */}
+      {/* Sign-in Card */}
       <div className="relative z-10 w-full max-w-md border border-purple-500/30 p-10 rounded-3xl backdrop-blur-xl bg-gradient-to-br from-white/5 via-purple-500/10 to-white/5 shadow-2xl space-y-8">
+
         {/* Border Highlights */}
         <div className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-purple-500/50 rounded-tl-lg" />
         <div className="absolute top-4 right-4 w-8 h-8 border-r-2 border-t-2 border-cyan-500/50 rounded-tr-lg" />
         <div className="absolute bottom-4 left-4 w-8 h-8 border-l-2 border-b-2 border-emerald-500/50 rounded-bl-lg" />
         <div className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-pink-500/50 rounded-br-lg" />
 
-        {/* Header */}
         <div className="flex items-center justify-center space-x-2">
           <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-cyan-500 rounded-full flex items-center justify-center">
             <div className="w-6 h-6 bg-white rounded-full animate-pulse"></div>
@@ -124,12 +131,10 @@ export default function SignInPage() {
           </h1>
         </div>
 
-        {/* Subtitle */}
-        <p className="text-xl text-center bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-black font-semibold">
+        <p className="text-xl text-center bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
           Practice job interviews with AI
         </p>
 
-        {/* Google Sign In */}
         <button
           onClick={() => signIn('google', { callbackUrl: '/' })}
           className="w-full flex items-center justify-center gap-3 cursor-pointer bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-600 hover:to-cyan-600 text-white font-semibold py-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-105"
@@ -143,14 +148,13 @@ export default function SignInPage() {
           />
           Sign in with Google
         </button>
-
-        {/* Footer */}
+        
         <p className="text-xs text-center text-gray-400">
           We respect your privacy. No spam — just interviews.
         </p>
 
         <p className="text-xs text-gray-400 cursor-pointer text-center mt-6">
-          &copy; {new Date().getFullYear()}{' '}
+          &copy; {new Date().getFullYear()}{" "}
           <a
             href="https://cealadigital.co.uk"
             target="_blank"
