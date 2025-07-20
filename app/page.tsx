@@ -4,12 +4,28 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 
+// ✅ Type definitions
+type Particle = {
+  id: number;
+  left: number;
+  top: number;
+  animationDelay: number;
+  animationDuration: number;
+};
+
+type CodeRain = {
+  id: number;
+  left: number;
+  animationDelay: number;
+  bits: string[];
+};
+
 export default function Dashboard() {
   const router = useRouter();
   const { data: session, status } = useSession();
 
-  const [particles, setParticles] = useState([]);
-  const [codeRain, setCodeRain] = useState([]);
+  const [particles, setParticles] = useState<Particle[]>([]);
+  const [codeRain, setCodeRain] = useState<CodeRain[]>([]);
   const [isClient, setIsClient] = useState(false);
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -22,7 +38,7 @@ export default function Dashboard() {
   useEffect(() => {
     setIsClient(true);
 
-    const particleData = Array.from({ length: 50 }, (_, i) => ({
+    const particleData: Particle[] = Array.from({ length: 50 }, (_, i) => ({
       id: i,
       left: Math.random() * 100,
       top: Math.random() * 100,
@@ -31,7 +47,7 @@ export default function Dashboard() {
     }));
     setParticles(particleData);
 
-    const codeRainData = Array.from({ length: 20 }, (_, i) => ({
+    const codeRainData: CodeRain[] = Array.from({ length: 20 }, (_, i) => ({
       id: i,
       left: i * 5,
       animationDelay: i * 0.5,
@@ -160,13 +176,22 @@ export default function Dashboard() {
             <div className="absolute top-0 left-10 w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce">
               HTML
             </div>
-            <div className="absolute top-0 right-10 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce" style={{ animationDelay: "0.5s" }}>
+            <div
+              className="absolute top-0 right-10 w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce"
+              style={{ animationDelay: "0.5s" }}
+            >
               CSS
             </div>
-            <div className="absolute bottom-0 left-10 w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce" style={{ animationDelay: "1s" }}>
+            <div
+              className="absolute bottom-0 left-10 w-12 h-12 bg-gradient-to-br from-yellow-500 to-orange-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce"
+              style={{ animationDelay: "1s" }}
+            >
               JS
             </div>
-            <div className="absolute bottom-0 right-10 w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce" style={{ animationDelay: "1.5s" }}>
+            <div
+              className="absolute bottom-0 right-10 w-12 h-12 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center text-white font-bold text-xs animate-bounce"
+              style={{ animationDelay: "1.5s" }}
+            >
               PHP
             </div>
           </div>
