@@ -7,10 +7,8 @@ import Image from 'next/image';
 import Vapi from '@vapi-ai/web';
 
 const vapi = new Vapi(process.env.NEXT_PUBLIC_VAPI_WEB_TOKEN!);
-<<<<<<< HEAD
-=======
 
->>>>>>> 3ff88fa9b9257f8b86d39635c4db1251cf7e08e3
+
 
 export default function InterviewPage() {
   const { data: session } = useSession();
