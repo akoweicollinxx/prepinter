@@ -1,10 +1,14 @@
-// lib/mongodb.ts
 import { MongoClient } from "mongodb";
+
+// Extend the global type to include our custom property
+declare global {
+  var _mongoClientPromise: Promise<MongoClient> | undefined;
+}
 
 const uri = process.env.MONGODB_URI!;
 const options = {};
 
-let client;
+let client: MongoClient;
 let clientPromise: Promise<MongoClient>;
 
 if (!global._mongoClientPromise) {
